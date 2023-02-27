@@ -1,10 +1,13 @@
 package org.exapmle;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -12,34 +15,32 @@ import java.time.Duration;
 
 import static org.exapmle.contant.Constant.*;
 
-public class MinePage {
+public class MinePage extends BasePage {
+
+    @FindBy(xpath = "//link[@rel = 'canonical']")
+    private WebElement canonical;
 
     @Test
+    @Owner("Данил Братусь")
+    @Description("Проверка правильности URL")
     public void openMainPage() {
-        System.setProperty(KEY_PROPERTY_DRIVER, VOLUME_PROPERTY_DRIVER);
-
-        WebDriver driver = new ChromeDriver();
         driver.get(MAIN_URL);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
-
-        WebElement hrefMine =
-                wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//link[@rel = 'canonical']")));
-        String mainURL = hrefMine.getDomProperty("href");
-
-        driver.quit();
-
+        canonical =
+                new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//link[@rel = 'canonical']")));
+        String mainURL = canonical.getDomProperty("href");
         Assert.assertEquals(mainURL, MAIN_URL);
     }
+
 /**
  * Хахахаа!!!
  * Мучался почему не работает, а оказывается logo не кликабельно)))
  *
  * */
     @Test
+    @Owner("Danil Bratus")
+    @Description("Проверка кликабедьности LOGO и возврат на главную страницу")
     public void backToMainPage() {
-        System.setProperty(KEY_PROPERTY_DRIVER, VOLUME_PROPERTY_DRIVER);
-
-        WebDriver driver = new ChromeDriver();
         driver.get(MAIN_URL);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
 
@@ -61,8 +62,10 @@ public class MinePage {
     }
 
     @Test
+    @Owner("Danil Bratus")
+    @Description("Проверка открытия главной страницы по вкладке через сторонюю вкладку")
     public void beckToMainPageThroughAboutTheBank() {
-        System.setProperty(KEY_PROPERTY_DRIVER, VOLUME_PROPERTY_DRIVER);
+        System.setProperty(WEB_DRIVER, CHROMEDRIVER_EXE);
 
         WebDriver driver = new ChromeDriver();
         driver.get(MAIN_URL);
@@ -88,8 +91,10 @@ public class MinePage {
     }
 
     @Test
+    @Owner("Danil Bratus")
+    @Description("Проверка открытия карты офисы")
     public void openOfficeAndScreen() {
-        System.setProperty(KEY_PROPERTY_DRIVER, VOLUME_PROPERTY_DRIVER);
+        System.setProperty(WEB_DRIVER, CHROMEDRIVER_EXE);
 
         WebDriver driver = new ChromeDriver();
         driver.get(MAIN_URL);
@@ -104,8 +109,10 @@ public class MinePage {
     }
 
     @Test
+    @Owner("Danil Bratus")
+    @Description("Проверка работы поиска")
     public void openSearchToDepositReliable() {
-        System.setProperty(KEY_PROPERTY_DRIVER, VOLUME_PROPERTY_DRIVER);
+        System.setProperty(WEB_DRIVER, CHROMEDRIVER_EXE);
 
         WebDriver driver = new ChromeDriver();
         driver.get(MAIN_URL);
